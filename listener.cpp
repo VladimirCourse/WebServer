@@ -5,6 +5,7 @@ Listener::Listener(const QHostAddress &address, const quint16 port, QObject *par
 }
 //создание сокета для каждого нового соединения
 void Listener::incomingConnection(int socket){
+    //TODO: заменить на QSslSocket для сертификата
     QTcpSocket* s = new QTcpSocket(this);
     Reader *r = new Reader(s);
     connect(s, SIGNAL(readyRead()), r, SLOT(read()));
