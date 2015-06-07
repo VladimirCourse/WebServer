@@ -5,10 +5,12 @@ Listener::Listener(const QHostAddress &address, const quint16 port, QObject *par
 }
 
 void Listener::incomingConnection(int socket){
-    QTcpSocket* s = new QTcpSocket(this);
-    Reader *r = new Reader(s);
-    connect(s, SIGNAL(readyRead()), r, SLOT(read()));
-    connect(s, SIGNAL(disconnected()), r, SLOT(disconnect()));
+    QSslSocket* s = new QSslSocket(this);
+    Reader *reader = new Reader(s);
+
+    connect(s, SIGNAL(encrypted()), reader, SLOT(read()));
+    s->startServerEncryption();
+    connect(s, SIGNAL(disconnected()), reader, SLOT(disconnect()));
     s->setSocketDescriptor(socket);
 }
 
