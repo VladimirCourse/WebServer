@@ -20,12 +20,14 @@ struct Author{
 };
 //класс-хранитель html-страниц, книг и авторов
 class DataStorage{
+
 public:
     static QMap <QString, Book> books;
     static QMap <QString, Author> authors;
     static QMap <QString, QString> pages;
     static QMap <QString, QString> hiddenPages;
     DataStorage();
+
 private:
     void initBooks();
     void initPages();
