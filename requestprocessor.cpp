@@ -1,24 +1,26 @@
 #include "requestprocessor.h"
 #include <QDebug>
 
+//мап возможных запросов и указателей на методы, которые их обрабатывают
 RequestProcessor::RequestProcessor(){
     m_requests["/getBookInfo"] = &RequestProcessor::getBookInfo;
     m_requests["/addBook"] = &RequestProcessor::addBook;
     m_requests["/addAuthor"] = &RequestProcessor::addAuthor;
     m_requests["/getAuthorInfo"] = &RequestProcessor::getAuthorInfo;
 }
-
+//обработка запроса
 QString RequestProcessor::processRequest(QString req){
     QStringList reqContent = req.split("?");
     QString reqType;
     reqType = reqContent[0];
+    //если запрос есть в списке и он в нормальном виде (есть параметры)
     if (m_requests.contains(reqType) && reqContent.size() > 1){
         return  (this->*m_requests[reqType])(reqContent[1]);
     }else{
         return "WRONG REQUEST";
     }
 }
-
+//возвращает вектор значений параметров запроса, которые идут после =
 QVector <QString> RequestProcessor::getParamValues(QStringList params){
     QStringList::iterator it;
     QVector <QString> paramValues;
@@ -27,7 +29,7 @@ QVector <QString> RequestProcessor::getParamValues(QStringList params){
     }
     return paramValues;
 }
-
+//обработка запроса добавления книги
 QString RequestProcessor::addBook(QString req){
     Book book;
     QVector <QString> paramValues = getParamValues(req.split("&"));
@@ -39,7 +41,7 @@ QString RequestProcessor::addBook(QString req){
     DataStorage::books[bookId] = book;
     return req;
 }
-
+//обработка запроса добавления автора
 QString RequestProcessor::addAuthor(QString req){
     Author author;
     QVector <QString> paramValues = getParamValues(req.split("&"));
@@ -50,17 +52,17 @@ QString RequestProcessor::addAuthor(QString req){
     DataStorage::authors[authorId] = author;
     return req;
 }
-
+//замена в странице с инфой о чем-то строки id_rep на нужный, т.е. что-то вроде динамической страницы
 QString RequestProcessor::replacedIdPage(QString pagename, QString id){
     QString page = DataStorage::hiddenPages[pagename];
     page.replace("id_rep", id);
     return page;
 }
-
+//обработка запроса вывести инфу о книге
 QString RequestProcessor::getBookInfo(QString req){
     return m_htmlParser.parseHtml(replacedIdPage("/book_info", req.split("=").last()));
 }
-
+//обработка запроса вывести инфу об авторе
 QString RequestProcessor::getAuthorInfo(QString req){
     return m_htmlParser.parseHtml(replacedIdPage("/author_info", req.split("=").last()));
 }

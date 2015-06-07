@@ -3,6 +3,7 @@
 
 #include "reader.h"
 
+//класс сервера, который слушает порт на определенном адресе и дает ответы на запросы
 class Listener: public QTcpServer{
 
 public:

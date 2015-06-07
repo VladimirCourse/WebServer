@@ -5,11 +5,13 @@
 #include "datastorage.h"
 #include "htmlparser.h"
 
+//класс-обработчик запросов
 class RequestProcessor{
 
 public:
     RequestProcessor();
     QString processRequest(QString req);
+
 private:
     HtmlParser m_htmlParser;
     typedef QString (RequestProcessor::*ReqFunc)(QString);

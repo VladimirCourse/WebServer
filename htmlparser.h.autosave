@@ -8,9 +8,11 @@
 
 //класс-парсер своих тегов
 class HtmlParser{
+    
 public:
     HtmlParser();
     QString parseHtml(QString page);
+    
 private:
     typedef QString (HtmlParser::*ParseFunc)(QString);
     QMap <QString, ParseFunc> m_regTags;

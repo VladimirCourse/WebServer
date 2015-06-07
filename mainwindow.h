@@ -6,7 +6,7 @@
 namespace Ui {
 class MainWindow;
 }
-
+//класс главного окна, не нужен
 class MainWindow : public QMainWindow{
     Q_OBJECT
 
