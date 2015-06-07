@@ -39,7 +39,7 @@ QString RequestProcessor::addBook(QString req){
     book.author = paramValues[3];
     QString bookId = QString::number(DataStorage::books.size() + 1);
     DataStorage::books[bookId] = book;
-    return req;
+    return m_htmlParser.parseHtml(DataStorage::pages["/"]);
 }
 //обработка запроса добавления автора
 QString RequestProcessor::addAuthor(QString req){
@@ -50,7 +50,7 @@ QString RequestProcessor::addAuthor(QString req){
     author.bornYear = paramValues[2];
     QString authorId = QString::number(DataStorage::authors.size() + 1);
     DataStorage::authors[authorId] = author;
-    return req;
+    return m_htmlParser.parseHtml(DataStorage::pages["/"]);
 }
 //замена в странице с инфой о чем-то строки id_rep на нужный, т.е. что-то вроде динамической страницы
 QString RequestProcessor::replacedIdPage(QString pagename, QString id){
